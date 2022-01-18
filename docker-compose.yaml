@@ -11,6 +11,8 @@ services:
     image: rest-service
     environment:
       - RABBIT_MQ_HOSTNAME=prod-rabbitMq
+    ports:
+      - 8181:8181
     networks:
       - prod-network
     depends_on:
