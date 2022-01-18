@@ -2,38 +2,29 @@ version: '3'
 services:
   rabbitMq:
     image: rabbitmq:3-management
-    container_name: rabbitMq
+    container_name: prod-rabbitMq
+    networks:
+      - prod-network
 
   rest:
-    container_name: rest
+    container_name: prod-rest
     image: rest-service
     environment:
-      - RABBIT_MQ_HOSTNAME=rabbitMq
-    ports:
-      - 8181:8181
+      - RABBIT_MQ_HOSTNAME=prod-rabbitMq
+    networks:
+      - prod-network
     depends_on:
       - rabbitMq
 
   token:
-    container_name: token
+    container_name: prod-token
     image: token-service
     environment:
-      - RABBIT_MQ_HOSTNAME=rabbitMq
+      - RABBIT_MQ_HOSTNAME=prod-rabbitMq
+    networks:
+      - prod-network
     depends_on:
       - rabbitMq
 
-  payment:
-    container_name: payment
-    image: payment-service
-    environment:
-      - RABBIT_MQ_HOSTNAME=rabbitMq
-    depends_on:
-      - rabbitMq
-
-  account:
-    container_name: account
-    image: account-service
-    environment:
-      - RABBIT_MQ_HOSTNAME=rabbitMq
-    depends_on:
-      - rabbitMq
+networks:
+  prod-network:
