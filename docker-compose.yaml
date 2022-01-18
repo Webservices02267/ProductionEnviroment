@@ -1,0 +1,39 @@
+version: '3'
+services:
+  rabbitMq:
+    image: rabbitmq:3-management
+    container_name: rabbitMq
+
+  rest:
+    container_name: rest
+    image: rest-service
+    environment:
+      - RABBIT_MQ_HOSTNAME=rabbitMq
+    ports:
+      - 8181:8181
+    depends_on:
+      - rabbitMq
+
+  token:
+    container_name: token
+    image: token-service
+    environment:
+      - RABBIT_MQ_HOSTNAME=rabbitMq
+    depends_on:
+      - rabbitMq
+
+  payment:
+    container_name: payment
+    image: payment-service
+    environment:
+      - RABBIT_MQ_HOSTNAME=rabbitMq
+    depends_on:
+      - rabbitMq
+
+  account:
+    container_name: account
+    image: account-service
+    environment:
+      - RABBIT_MQ_HOSTNAME=rabbitMq
+    depends_on:
+      - rabbitMq
