@@ -28,5 +28,37 @@ services:
     depends_on:
       - rabbitMq
 
+
+  payment:
+    container_name: prod-payment
+    image: payment-service
+    environment:
+      - RABBIT_MQ_HOSTNAME=prod-rabbitMq
+    networks:
+      - prod-network
+    depends_on:
+      - rabbitMq
+
+  account:
+    container_name: prod-account
+    image: account-service
+    environment:
+      - RABBIT_MQ_HOSTNAME=prod-rabbitMq
+    networks:
+      - prod-network
+    depends_on:
+      - rabbitMq
+
+  report:
+    container_name: prod-report
+    image: report-service
+    environment:
+      - RABBIT_MQ_HOSTNAME=prod-rabbitMq
+    networks:
+      - prod-network
+    depends_on:
+      - rabbitMq
+
+
 networks:
   prod-network:
